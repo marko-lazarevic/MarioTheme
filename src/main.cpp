@@ -167,6 +167,10 @@ int main() {
 
     // load models
     // -----------
+
+    Model coinModel("resources/objects/mario_coin/Mario_Coin.obj");
+    coinModel.SetShaderTextureNamePrefix("material.");
+
     Model ourModel("resources/objects/mario_coin/Mario_Coin.obj");
     ourModel.SetShaderTextureNamePrefix("material.");
 
@@ -229,6 +233,11 @@ int main() {
         materialShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(40.0f)));
         materialShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(45.0f)));
 
+        materialShader.setVec3("dirLight.direction", glm::vec3(0.0f,-1.0f,0.0f));
+        materialShader.setVec3("dirLight.ambient", glm::vec3(0.1f,0.1f,0.1f));
+        materialShader.setVec3("dirLight.diffuse", glm::vec3(0.5f,0.3f,0.3f));
+        materialShader.setVec3("dirLight.specular", glm::vec3(0.2f,0.2f,0.2f));
+
         // view/projection transformations
         glm::mat4 projection1 = glm::perspective(glm::radians(programState->camera.Zoom),
                                                  (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
@@ -238,12 +247,15 @@ int main() {
 
         // render the loaded model
         glm::mat4 model1 = glm::mat4(1.0f);
-        model1 = glm::translate(model1,glm::vec3(0.0f,(float)glm::cos(glfwGetTime())/2.0f,0.0f));
-        model1 = glm::scale(model1, glm::vec3(0.1f));
-        model1 = glm::rotate(model1,5.0f* (float)glfwGetTime(),glm::vec3(0.0f,1.0f,0.0f));
-        materialShader.setMat4("model", model1);
 
-        ourModel.Draw(materialShader);
+        for(int i=0;i<10;i++){
+            model1 = glm::mat4(1.0f);
+            model1 = glm::translate(model1,glm::vec3(3.0f*i,(float)glm::cos(glfwGetTime())/2.0f,0.0f));
+            model1 = glm::scale(model1, glm::vec3(0.1f));
+            model1 = glm::rotate(model1,5.0f* (float)glfwGetTime(),glm::vec3(0.0f,1.0f,0.0f));
+            materialShader.setMat4("model", model1);
+            coinModel.Draw(materialShader);
+        }
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);

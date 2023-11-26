@@ -54,6 +54,7 @@ uniform bool blinn;
 uniform vec3 viewPos;
 
 uniform SpotLight spotLight;
+uniform DirLight dirLight;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -66,7 +67,10 @@ void main()
     vec3 norm = normalize(fs_in.Normal);
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
 
-    vec3 result = CalcPointLight(pointLight, norm,fs_in.FragPos, viewDir);
+    vec3 result = vec3(0.0f);
+
+    result += CalcDirLight(dirLight, norm, viewDir);
+    result += CalcPointLight(pointLight, norm,fs_in.FragPos, viewDir);
     result += CalcSpotLight(spotLight, norm, fs_in.FragPos, viewDir);
 
     FragColor = vec4(result, 1.0);
