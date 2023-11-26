@@ -163,9 +163,11 @@ int main() {
     // -------------------------
     Shader ourShader("resources/shaders/2.model_lighting.vs", "resources/shaders/2.model_lighting.fs");
 
+    Shader materialShader("resources/shaders/materialVertexShader.vs","resources/shaders/materialFragmentShader.fs");
+
     // load models
     // -----------
-    Model ourModel("resources/objects/backpack/backpack.obj");
+    Model ourModel("resources/objects/mario_coin/Mario_Coin.obj");
     ourModel.SetShaderTextureNamePrefix("material.");
 
     PointLight& pointLight = programState->pointLight;
@@ -227,7 +229,44 @@ int main() {
                                programState->backpackPosition); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);
+
+        //NEW CODE
+
+        materialShader.use();
+        pointLight.position = glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
+        materialShader.setVec3("pointLight.position", pointLight.position);
+        materialShader.setVec3("pointLight.ambient", pointLight.ambient);
+        materialShader.setVec3("pointLight.diffuse", pointLight.diffuse);
+        materialShader.setVec3("pointLight.specular", pointLight.specular);
+        materialShader.setFloat("pointLight.constant", pointLight.constant);
+        materialShader.setFloat("pointLight.linear", pointLight.linear);
+        materialShader.setFloat("pointLight.quadratic", pointLight.quadratic);
+        materialShader.setVec3("viewPos", programState->camera.Position);
+        materialShader.setFloat("material.shininess", 32.0f);
+        materialShader.setBool("blinn",true);
+
+        materialShader.setVec3("spotLight.position", programState->camera.Position);
+        materialShader.setVec3("spotLight.ambient", pointLight.ambient);
+        materialShader.setVec3("spotLight.diffuse", pointLight.diffuse);
+        materialShader.setVec3("spotLight.specular", pointLight.specular);
+        materialShader.setFloat("spotLight.constant", pointLight.constant);
+        materialShader.setFloat("spotLight.linear", pointLight.linear);
+        materialShader.setFloat("spotLight.quadratic", pointLight.quadratic);
+
+        // view/projection transformations
+        glm::mat4 projection1 = glm::perspective(glm::radians(programState->camera.Zoom),
+                                                 (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view1 = programState->camera.GetViewMatrix();
+        materialShader.setMat4("projection", projection1);
+        materialShader.setMat4("view", view1);
+
+        // render the loaded model
+        glm::mat4 model1 = glm::mat4(1.0f);
+        model1 = glm::translate(model1,glm::vec3(0.0f));
+        model1 = glm::scale(model1, glm::vec3(0.5f));
+        materialShader.setMat4("model", model1);
+
+        ourModel.Draw(materialShader);
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);

@@ -1,0 +1,27 @@
+# ninja log v5
+0	237	1701002358603879792	libs/glad/CMakeFiles/glad.dir/src/glad.c.o	e5af97be256eae4b
+237	306	1701002358675878482	libs/glad/libglad.a	8c5d381de2f2bf41
+306	828	1701002359195869017	libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_glfw.cpp.o	1c787ef5d0ac16fc
+828	1112	1701002359479863846	libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_opengl3.cpp.o	de1ffec61b66ed41
+1112	3493	1701002361859820486	libs/imgui/CMakeFiles/imgui.dir/src/imgui_tables.cpp.o	ca2d836dfc54c94
+0	5547	1701002363907783136	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+1	5580	1701002363943782479	libs/imgui/CMakeFiles/imgui.dir/src/imgui_demo.cpp.o	f61e7b0d971a24a0
+1	6374	1701002364739767952	libs/imgui/CMakeFiles/imgui.dir/src/imgui_draw.cpp.o	e99a3cca0f6f3c09
+0	7243	1701002365607752105	CMakeFiles/STB_IMAGE.dir/libs/stb_image.cpp.o	1320b8ef75a26219
+7243	7252	1701002365619751886	libSTB_IMAGE.a	3a8872cffd182ad7
+0	8623	1701002366983726971	libs/imgui/CMakeFiles/imgui.dir/src/imgui.cpp.o	a8b3010799e0fe18
+3493	9660	1701002368023707963	libs/imgui/CMakeFiles/imgui.dir/src/imgui_widgets.cpp.o	e84a8420914679c6
+9660	9712	1701002368079706939	libs/imgui/libimgui.a	35402a41ca1fe234
+9712	9838	1701002368203704672	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
+1	2726	1701002615718958635	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+2726	2871	1701002615862955764	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
+1	2670	1701002651502242085	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+2670	2797	1701002651630239511	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
+0	2847	1701002742492393087	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+2847	2968	1701002742612390625	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
+1	2541	1701002968995655977	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+2541	2679	1701002969135653001	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
+0	2509	1701003033290284094	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+2509	2613	1701003033398281781	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
+1	2531	1701003055737802828	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+2531	2638	1701003055845800510	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
