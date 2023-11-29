@@ -11,5 +11,5 @@ Ni 1.450000
 d 1.000000
 illum 3
 map_Kd color.png
-map_Bump Mario_Coin_Normal.png
-map_Ns Mario_Coin_Roughness.png
+map_Bump normal.png
+map_Ns specular.png
