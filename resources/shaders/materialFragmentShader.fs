@@ -3,13 +3,17 @@ out vec4 FragColor;
 
 in VS_OUT {
     vec3 FragPos;
-    vec3 Normal;
     vec2 TexCoords;
+    vec3 TangentPointLightPos;
+    vec3 TangentSpotLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
 } fs_in;
 
 struct Material {
     sampler2D diffuse;
     sampler2D specular;
+    sampler2D normal;
     float shininess;
 };
 
@@ -48,11 +52,12 @@ struct SpotLight {
     vec3 specular;
 };
 
-uniform PointLight pointLight;
+
 uniform Material material;
 uniform bool blinn;
 uniform vec3 viewPos;
 
+uniform PointLight pointLight;
 uniform SpotLight spotLight;
 uniform DirLight dirLight;
 
@@ -64,8 +69,12 @@ vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
-    vec3 norm = normalize(fs_in.Normal);
-    vec3 viewDir = normalize(viewPos - fs_in.FragPos);
+    // obtain normal from normal map in range [0,1]
+    vec3 norm = texture(material.normal, fs_in.TexCoords).rgb;
+    // transform normal vector to range [-1,1]
+    norm = normalize(norm * 2.0 - 1.0);  // this normal is in tangent space
+
+    vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
 
     vec4 result = vec4(0.0f);
 
@@ -106,7 +115,7 @@ vec4 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 //POINT LIGHT
 vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-    vec3 lightDir = normalize(light.position - fragPos);
+    vec3 lightDir = normalize(fs_in.TangentPointLightPos - fs_in.TangentFragPos);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
@@ -137,7 +146,7 @@ vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 //SPOT LIGHT
 vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-    vec3 lightDir = normalize(light.position - fragPos);
+   vec3 lightDir = normalize(fs_in.TangentSpotLightPos - fs_in.TangentFragPos);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
