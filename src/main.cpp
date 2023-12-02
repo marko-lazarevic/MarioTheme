@@ -303,9 +303,9 @@ int main() {
 
     //load textures
     // --------------
-    unsigned int cubeDiffuse = loadTexture(FileSystem::getPath("resources/textures/bricks.png").c_str());
+    unsigned int cubeDiffuse = loadTexture(FileSystem::getPath("resources/textures/brickwall.jpg").c_str());
     unsigned int cubeSpecular = loadTexture(FileSystem::getPath("resources/textures/bricksSpecular.png").c_str());
-    unsigned int cubeNormal = loadTexture(FileSystem::getPath("resources/textures/bricksNormal.png").c_str());
+    unsigned int cubeNormal = loadTexture(FileSystem::getPath("resources/textures/brickwall_normal.jpg").c_str());
 
     vector<std::string> faces
             {
