@@ -253,9 +253,7 @@ int main() {
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
-    /*glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    glFrontFace(GL_CCW);*/
+    glEnable(GL_CULL_FACE);
 
     // build and compile shaders
     // -------------------------
@@ -303,9 +301,9 @@ int main() {
 
     //load textures
     // --------------
-    unsigned int cubeDiffuse = loadTexture(FileSystem::getPath("resources/textures/brickwall.jpg").c_str());
+    unsigned int cubeDiffuse = loadTexture(FileSystem::getPath("resources/textures/bricks.png").c_str());
     unsigned int cubeSpecular = loadTexture(FileSystem::getPath("resources/textures/bricksSpecular.png").c_str());
-    unsigned int cubeNormal = loadTexture(FileSystem::getPath("resources/textures/brickwall_normal.jpg").c_str());
+    unsigned int cubeNormal = loadTexture(FileSystem::getPath("resources/textures/bricksNormal.png").c_str());
 
     vector<std::string> faces
             {
@@ -408,12 +406,15 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, cubeSpecular);
         // bind normal map
         glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, cubeNormal);
+        glBindTexture(GL_TEXTURE_2D, cubeNormal);/**/
 
         /*glBindVertexArray(cubeVAO);
 
         glDrawArrays(GL_TRIANGLES,0,36);*/
         renderQuad();
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         for(int i=0;i<10;i++){
             model = glm::mat4(1.0f);
@@ -423,6 +424,8 @@ int main() {
             materialShader.setMat4("model", model);
             coinModel.Draw(materialShader);
         }
+
+
 
         // draw skybox as last
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
