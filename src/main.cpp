@@ -395,9 +395,9 @@ int main() {
         model = glm::scale(model, glm::vec3(2.0f));
 
         materialShader.setMat4("model", model);
-        materialShader.setInt("material.diffuse", 0);
-        materialShader.setInt("material.specular", 1);
-        materialShader.setInt("material.normal", 2);
+        materialShader.setInt("material.texture_diffuse", 0);
+        materialShader.setInt("material.texture_specular", 1);
+        materialShader.setInt("material.texture_normal", 2);
         // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, cubeDiffuse);
@@ -407,14 +407,11 @@ int main() {
         // bind normal map
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, cubeNormal);/**/
-
-        /*glBindVertexArray(cubeVAO);
-
-        glDrawArrays(GL_TRIANGLES,0,36);*/
         renderQuad();
 
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        /*glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, 0);*/
+
 
         for(int i=0;i<10;i++){
             model = glm::mat4(1.0f);
