@@ -32,6 +32,8 @@ unsigned int loadCubemap(vector<std::string> faces);
 
 void renderQuad();
 
+void renderCube(Shader shader, glm::vec3 center, float a);
+
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -66,7 +68,7 @@ struct ProgramState {
     float backpackScale = 1.0f;
     PointLight pointLight;
     ProgramState()
-            : camera(glm::vec3(0.0f, 0.0f, 3.0f)) {}
+            : camera(glm::vec3(0.0f, 0.0f, 10.0f)) {}
 
     void SaveToFile(std::string filename);
 
@@ -192,6 +194,129 @@ float skyboxVertices[] = {
         1.0f, -1.0f,  1.0f
 };
 
+float cubes[][3] = {
+        {-18.0f, -5.2f, 0.0f},
+        {-18.0f, -7.2f, 0.0f},
+        {-18.0f, -9.2f, 0.0f},
+        {-18.0f, -11.2f, 0.0f},
+        {-18.0f, -3.2f, 0.0f},
+        {-18.0f, -1.2f, 0.0f},
+        {-18.0f, 0.8f, 0.0f},
+        {-18.0f, 2.8f, 0.0f},
+        {-18.0f, 4.8f, 0.0f},
+        {-18.0f, 6.8f, 0.0f},
+        {-18.0f, 8.8f, 0.0f},
+        {-18.0f, 10.8f, 0.0f},
+        {-16.0f, -5.2f, 0.0f},
+        {-16.0f, -7.2f, 0.0f},
+        {-16.0f, -9.2f, 0.0f},
+        {-16.0f, -11.2f, 0.0f},
+        {-14.0f, -5.2f, 0.0f},
+        {-14.0f, -7.2f, 0.0f},
+        {-14.0f, -9.2f, 0.0f},
+        {-14.0f, -11.2f, 0.0f},
+        {-12.0f, -5.2f, 0.0f},
+        {-12.0f, -7.2f, 0.0f},
+        {-12.0f, -9.2f, 0.0f},
+        {-12.0f, -11.2f, 0.0f},
+        {-10.0f, -5.2f, 0.0f},
+        {-10.0f, -7.2f, 0.0f},
+        {-10.0f, -9.2f, 0.0f},
+        {-10.0f, -11.2f, 0.0f},
+        {-8.0f, -5.2f, 0.0f},
+        {-8.0f, -7.2f, 0.0f},
+        {-8.0f, -9.2f, 0.0f},
+        {-8.0f, -11.2f, 0.0f},
+        {-6.0f, -5.2f, 0.0f},
+        {-6.0f, -7.2f, 0.0f},
+        {-6.0f, -9.2f, 0.0f},
+        {-6.0f, -11.2f, 0.0f},
+        {-4.0f, -5.2f, 0.0f},
+        {-4.0f, -7.2f, 0.0f},
+        {-4.0f, -9.2f, 0.0f},
+        {-4.0f, -11.2f, 0.0f},
+        {-2.0f, -5.2f, 0.0f},
+        {-2.0f, -7.2f, 0.0f},
+        {-2.0f, -9.2f, 0.0f},
+        {-2.0f, -11.2f, 0.0f},
+        {0.0f, -5.2f, 0.0f},
+        {0.0f, -7.2f, 0.0f},
+        {0.0f, -9.2f, 0.0f},
+        {0.0f, -11.2f, 0.0f},
+        {2.0f, -5.2f, 0.0f},
+        {2.0f, -7.2f, 0.0f},
+        {2.0f, -9.2f, 0.0f},
+        {2.0f, -11.2f, 0.0f},
+        {4.0f, -5.2f, 0.0f},
+        {4.0f, -7.2f, 0.0f},
+        {4.0f, -9.2f, 0.0f},
+        {4.0f, -11.2f, 0.0f},
+        {6.0f, -5.2f, 0.0f},
+        {6.0f, -7.2f, 0.0f},
+        {6.0f, -9.2f, 0.0f},
+        {6.0f, -11.2f, 0.0f},
+        {14.0f, -5.2f, 0.0f},
+        {16.0f, -5.2f, 0.0f},
+        {18.0f, -5.2f, 0.0f},
+        {20.0f, -5.2f, 0.0f},
+        {22.0f, -5.2f, 0.0f},
+        {24.0f, -5.2f, 0.0f},
+        {26.0f, -5.2f, 0.0f},
+        {28.0f, -5.2f, 0.0f},
+        {30.0f, -5.2f, 0.0f},
+        {32.0f, -5.2f, 0.0f},
+        {34.0f, -5.2f, 0.0f},
+        {36.0f, -5.2f, 0.0f},
+        {42.0f, -5.2f, 0.0f},
+        {44.0f, -5.2f, 0.0f},
+        {46.0f, -5.2f, 0.0f},
+        {48.0f, -5.2f, 0.0f},
+        {50.0f, -5.2f, 0.0f},
+        {52.0f, -5.2f, 0.0f},
+        {54.0f, -5.2f, 0.0f},
+        {56.0f, -5.2f, 0.0f},
+        {58.0f, -5.2f, 0.0f},
+        {60.0f, -5.2f, 0.0f},
+        {62.0f, -5.2f, 0.0f},
+        {64.0f, -5.2f, 0.0f},
+        {68.0f, -5.2f, 0.0f},
+        {68.0f, -7.2f, 0.0f},
+        {68.0f, -9.2f, 0.0f},
+        {68.0f, -11.2f, 0.0f},
+        {68.0f, -3.2f, 0.0f},
+        {68.0f, -1.2f, 0.0f},
+        {68.0f, 0.8f, 0.0f},
+        {68.0f, 2.8f, 0.0f},
+        {68.0f, 4.8f, 0.0f},
+        {68.0f, 6.8f, 0.0f},
+        {68.0f, 8.8f, 0.0f},
+        {68.0f, 10.8f, 0.0f},
+        {68.0f, 12.8f, 0.0f},
+        {20.0f, 0.8f, 0.0f},
+        {22.0f, 0.8f, 0.0f},
+        {26.0f, 0.8f, 0.0f},
+        {28.0f, 0.8f, 0.0f},
+        {50.0f, 0.8f, 0.0f},
+        {52.0f, 0.8f, 0.0f},
+        {56.0f, 0.8f, 0.0f},
+        {58.0f, 0.8f, 0.0f},
+};
+
+float mysteryCubes[][3] = {
+        {24.0f,0.8f,0.0f},
+        {54.0f,0.8f,0.0f},
+};
+
+float cubeSize = 2.0f;
+
+float coins[][3] = {
+        {22.0f,2.8f,0.0f},
+        {26.0f,2.8f,0.0f},
+
+        {52.0f,2.8f,0.0f},
+        {56.0f,2.8f,0.0f},
+};
+
 ProgramState *programState;
 
 void DrawImGui(ProgramState *programState);
@@ -257,35 +382,13 @@ int main() {
 
     // build and compile shaders
     // -------------------------
-    Shader ourShader("resources/shaders/2.model_lighting.vs", "resources/shaders/2.model_lighting.fs");
-
     Shader materialShader("resources/shaders/materialVertexShader.vs","resources/shaders/materialFragmentShader.fs");
     Shader skyboxShader("resources/shaders/skybox.vs", "resources/shaders/skybox.fs");
+
     // load models
     // -----------
-
     Model coinModel("resources/objects/mario_coin/Mario_Coin.obj");
     coinModel.SetShaderTextureNamePrefix("material.");
-
-    Model ourModel("resources/objects/mario_coin/Mario_Coin.obj");
-    ourModel.SetShaderTextureNamePrefix("material.");
-
-    //create cube
-
-    unsigned int cubeVBO, cubeVAO;
-    glGenVertexArrays(1, &cubeVAO);
-    glGenBuffers(1, &cubeVBO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-
-    glBindVertexArray(cubeVAO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
 
     //create skybox
     // skybox VAO
@@ -304,15 +407,18 @@ int main() {
     unsigned int cubeDiffuse = loadTexture(FileSystem::getPath("resources/textures/bricks.png").c_str());
     unsigned int cubeSpecular = loadTexture(FileSystem::getPath("resources/textures/bricksSpecular.png").c_str());
     unsigned int cubeNormal = loadTexture(FileSystem::getPath("resources/textures/bricksNormal.png").c_str());
+    unsigned int mysteryDiffuse = loadTexture(FileSystem::getPath("resources/textures/mystery.png").c_str());
+    unsigned int mysterySpecular = loadTexture(FileSystem::getPath("resources/textures/mystery_specular.png").c_str());
+    unsigned int mysteryNormal = loadTexture(FileSystem::getPath("resources/textures/mystery_normal.png").c_str());
 
     vector<std::string> faces
             {
-                    FileSystem::getPath("resources/textures/skybox/right.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/left.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/top.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/bottom.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/front.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/back.jpg")
+                    FileSystem::getPath("resources/textures/skybox/front5.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/front5.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/top5.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/bottom6.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/front5.jpg"),
+                    FileSystem::getPath("resources/textures/skybox/front5.jpg")
             };
     unsigned int cubemapTexture = loadCubemap(faces);
     skyboxShader.use();
@@ -335,7 +441,7 @@ int main() {
 
     // render loop
     // -----------
-    while (!glfwWindowShouldClose(window)) {
+   while (!glfwWindowShouldClose(window)) {
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -392,7 +498,7 @@ int main() {
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, -2.5f, 0.0f));
-        model = glm::scale(model, glm::vec3(2.0f));
+        model = glm::scale(model, glm::vec3(0.20f));
 
         materialShader.setMat4("model", model);
         materialShader.setInt("material.texture_diffuse", 0);
@@ -406,20 +512,38 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, cubeSpecular);
         // bind normal map
         glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, cubeNormal);/**/
-        renderQuad();
+        glBindTexture(GL_TEXTURE_2D, cubeNormal);
 
-        /*glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, 0);*/
+        for(auto cube:cubes){
+            renderCube(materialShader,glm::vec3(cube[0],cube[1],cube[2]),cubeSize);
+        }
 
+        // bind diffuse map
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, mysteryDiffuse);
+        // bind specular map
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, mysterySpecular);
+        // bind normal map
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, mysteryNormal);
+        for(auto cube:mysteryCubes){
+            renderCube(materialShader,glm::vec3(cube[0],cube[1],cube[2]),cubeSize);
+        }
 
-        for(int i=0;i<10;i++){
+        /**/glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        int i=0;
+        for(auto coin:coins){
             model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(3.0f * i, (float)glm::cos(glfwGetTime()) / 2.0f, 0.0f));
+            model = glm::translate(model,glm::vec3(coin[0],coin[1],coin[2]));
+            model = glm::translate(model, glm::vec3(0, (float)glm::cos(glfwGetTime()) / 3.0f, 0.0f));
             model = glm::scale(model, glm::vec3(0.1f));
             model = glm::rotate(model, 5.0f * (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
             materialShader.setMat4("model", model);
             coinModel.Draw(materialShader);
+            i++;
         }
 
 
@@ -721,4 +845,60 @@ void renderQuad()
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+}
+
+void renderCube(Shader shader, glm::vec3 center, float a){
+    glm::mat4 model = glm::mat4(1.0f);
+
+    model = glm::translate(model, center);
+    model = glm::translate(model,glm::vec3(0,0,a/2));
+    model = glm::scale(model,glm::vec3(a/2));
+    shader.setMat4("model", model);
+    renderQuad();
+
+    model = glm::scale(model,glm::vec3(2/a));
+    model = glm::translate(model,glm::vec3(0,0,-a/2));
+    model = glm::translate(model,glm::vec3(0,0,-a/2));
+    model = glm::rotate(model,glm::radians(180.0f),glm::vec3(0,1.0f,0));
+    model = glm::scale(model,glm::vec3(a/2));
+    shader.setMat4("model", model);
+    renderQuad();
+
+    model = glm::scale(model,glm::vec3(2/a));
+    model = glm::rotate(model,glm::radians(180.0f),glm::vec3(0,1.0f,0));
+    model = glm::translate(model,glm::vec3(0,0,a/2));
+    model = glm::translate(model,glm::vec3(a/2,0,0));
+    model = glm::rotate(model,glm::radians(90.0f),glm::vec3(0,1.0f,0));
+    model = glm::scale(model,glm::vec3(a/2));
+
+    shader.setMat4("model", model);
+    renderQuad();
+
+    model = glm::scale(model,glm::vec3(2/a));
+    model = glm::rotate(model,glm::radians(-90.0f),glm::vec3(0,1.0f,0));
+    model = glm::translate(model,glm::vec3(-a/2,0,0));
+    model = glm::translate(model,glm::vec3(-a/2,0,0));
+    model = glm::rotate(model,glm::radians(-90.0f),glm::vec3(0,1.0f,0));
+    model = glm::scale(model,glm::vec3(a/2));
+    shader.setMat4("model", model);
+    renderQuad();
+
+    model = glm::scale(model,glm::vec3(2/a));
+    model = glm::rotate(model,glm::radians(90.0f),glm::vec3(0,1.0f,0));
+    model = glm::translate(model,glm::vec3(a/2,0,0));
+    model = glm::translate(model,glm::vec3(0,a/2,0));
+    model = glm::rotate(model,glm::radians(-90.0f),glm::vec3(1.0f,0.0f,0));
+    model = glm::scale(model,glm::vec3(a/2));
+    shader.setMat4("model", model);
+    renderQuad();
+
+    model = glm::scale(model,glm::vec3(2/a));
+    model = glm::rotate(model,glm::radians(90.0f),glm::vec3(1.0f,0.0f,0));
+    model = glm::translate(model,glm::vec3(0,-a/2,0));
+    model = glm::translate(model,glm::vec3(0,-a/2,0));
+    model = glm::rotate(model,glm::radians(90.0f),glm::vec3(1.0f,0.0f,0));
+    model = glm::scale(model,glm::vec3(a/2));
+    shader.setMat4("model", model);
+    renderQuad();
+
 }
