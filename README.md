@@ -1,4 +1,4 @@
-# Campsite
+# Mario Theme
 
 # Photo
 ![image](https://github.com/marko-lazarevic/MarioTheme/assets/57814676/b23c2c4c-c24e-4eaf-add8-372b84baaacf)
