@@ -429,7 +429,7 @@ int main() {
 
     PointLight& pointLight = programState->pointLight;
     pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
-    pointLight.ambient = glm::vec3(0.2, 0.2, 0.2);
+    pointLight.ambient = glm::vec3(0.5, 0.5, 0.5);
     pointLight.diffuse = glm::vec3(0.8, 0.8, 0.8);
     pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
 
@@ -476,16 +476,16 @@ int main() {
         materialShader.setBool("blinn",true);
         materialShader.setFloat("heightScale",heightScale);
 
-        materialShader.setVec3("spotLight.position", glm::vec3(5.0f));
+        wmaterialShader.setVec3("spotLight.position", glm::vec3(5.0f));
         materialShader.setVec3("spotLight.direction", glm::vec3(-5.0f));
-        materialShader.setVec3("spotLight.ambient", glm::vec3(0.1f,0.1f,0.1f));
-        materialShader.setVec3("spotLight.diffuse", glm::vec3(0.3f,0.3f,0.3f));
-        materialShader.setVec3("spotLight.specular", glm::vec3(0.2f,0.2f,0.2f));
+        materialShader.setVec3("spotLight.ambient", glm::vec3(0.4f,0.4f,0.4f));
+        materialShader.setVec3("spotLight.diffuse", glm::vec3(1.0f,1.0f,1.0f));
+        materialShader.setVec3("spotLight.specular", glm::vec3(1.0f,1.0f,1.0f));
         materialShader.setFloat("spotLight.constant", pointLight.constant);
         materialShader.setFloat("spotLight.linear", pointLight.linear);
         materialShader.setFloat("spotLight.quadratic", pointLight.quadratic);
-        materialShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(40.0f)));
-        materialShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(45.0f)));
+        materialShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.0f)));
+        materialShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
         materialShader.setVec3("dirLight.direction", glm::vec3(0.0f,-1.0f,0.0f));
         materialShader.setVec3("dirLight.ambient", glm::vec3(0.1f,0.1f,0.1f));
