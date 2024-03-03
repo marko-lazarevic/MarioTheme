@@ -26,4 +26,4 @@ Moving:<br>
 - Group A:
     - [x] [Cubemaps - skybox]
 - Group B:
-    - [x] [Normal mapping]
+    - [x] [Normal mapping, Parallax mapping]

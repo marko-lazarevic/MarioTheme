@@ -37,6 +37,7 @@ void renderCube(Shader shader, glm::vec3 center, float a);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+float heightScale = 0.1f;
 
 // camera
 
@@ -407,9 +408,11 @@ int main() {
     unsigned int cubeDiffuse = loadTexture(FileSystem::getPath("resources/textures/bricks.png").c_str());
     unsigned int cubeSpecular = loadTexture(FileSystem::getPath("resources/textures/bricksSpecular.png").c_str());
     unsigned int cubeNormal = loadTexture(FileSystem::getPath("resources/textures/bricksNormal.png").c_str());
+    unsigned int cubeDisp = loadTexture(FileSystem::getPath("resources/textures/bricksDisplacment.png").c_str());
     unsigned int mysteryDiffuse = loadTexture(FileSystem::getPath("resources/textures/mystery.png").c_str());
     unsigned int mysterySpecular = loadTexture(FileSystem::getPath("resources/textures/mystery_specular.png").c_str());
     unsigned int mysteryNormal = loadTexture(FileSystem::getPath("resources/textures/mystery_normal.png").c_str());
+    unsigned int mysteryDisp= loadTexture(FileSystem::getPath("resources/textures/mystery_displacment.png").c_str());
 
     vector<std::string> faces
             {
@@ -471,6 +474,7 @@ int main() {
         materialShader.setVec3("viewPos", programState->camera.Position);
         materialShader.setFloat("material.shininess", 32.0f);
         materialShader.setBool("blinn",true);
+        materialShader.setFloat("heightScale",heightScale);
 
         materialShader.setVec3("spotLight.position", glm::vec3(5.0f));
         materialShader.setVec3("spotLight.direction", glm::vec3(-5.0f));
@@ -504,6 +508,7 @@ int main() {
         materialShader.setInt("material.texture_diffuse", 0);
         materialShader.setInt("material.texture_specular", 1);
         materialShader.setInt("material.texture_normal", 2);
+        materialShader.setInt("material.texture_depth", 3);
         // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, cubeDiffuse);
@@ -513,6 +518,9 @@ int main() {
         // bind normal map
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, cubeNormal);
+        // bind displacment map
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, cubeDisp);
 
         for(auto cube:cubes){
             renderCube(materialShader,glm::vec3(cube[0],cube[1],cube[2]),cubeSize);
@@ -527,6 +535,10 @@ int main() {
         // bind normal map
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, mysteryNormal);
+        // bind displacment map
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, mysteryDisp);
+
         for(auto cube:mysteryCubes){
             renderCube(materialShader,glm::vec3(cube[0],cube[1],cube[2]),cubeSize);
         }

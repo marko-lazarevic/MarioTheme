@@ -33,3 +33,17 @@
 2587	2687	1706969873573926996	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
 1	2684	1706970301146342681	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
 2684	2782	1706970301246342775	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
+5	146	1709468370545720163	libs/glad/CMakeFiles/glad.dir/src/glad.c.o	e5af97be256eae4b
+146	156	1709468370553720145	libs/glad/libglad.a	8c5d381de2f2bf41
+156	378	1709468370777719661	libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_glfw.cpp.o	1c787ef5d0ac16fc
+378	610	1709468371009719159	libs/imgui/CMakeFiles/imgui.dir/src/imgui_impl_opengl3.cpp.o	de1ffec61b66ed41
+610	2981	1709468373377714024	libs/imgui/CMakeFiles/imgui.dir/src/imgui_tables.cpp.o	ca2d836dfc54c94
+5	3329	1709468373725713268	libs/imgui/CMakeFiles/imgui.dir/src/imgui_demo.cpp.o	f61e7b0d971a24a0
+5	4324	1709468374717711111	CMakeFiles/project_base.dir/src/main.cpp.o	9d0842b489b62741
+5	4978	1709468375373709683	libs/imgui/CMakeFiles/imgui.dir/src/imgui_draw.cpp.o	e99a3cca0f6f3c09
+4	5596	1709468375993708331	CMakeFiles/STB_IMAGE.dir/libs/stb_image.cpp.o	1320b8ef75a26219
+5596	5604	1709468376005708305	libSTB_IMAGE.a	3a8872cffd182ad7
+5	6094	1709468376489707250	libs/imgui/CMakeFiles/imgui.dir/src/imgui.cpp.o	a8b3010799e0fe18
+2981	7421	1709468377817704350	libs/imgui/CMakeFiles/imgui.dir/src/imgui_widgets.cpp.o	e84a8420914679c6
+7421	7454	1709468377853704271	libs/imgui/libimgui.a	35402a41ca1fe234
+7454	7570	1709468377969704018	/home/marko/Documents/Projects/MarioTheme/project_base	9bcf332457da75d4
