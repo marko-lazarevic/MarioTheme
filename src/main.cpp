@@ -37,7 +37,7 @@ void renderCube(Shader shader, glm::vec3 center, float a);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-float heightScale = 0.1f;
+float heightScale = 0.001f;
 
 // camera
 
@@ -385,6 +385,7 @@ int main() {
     // -------------------------
     Shader materialShader("resources/shaders/materialVertexShader.vs","resources/shaders/materialFragmentShader.fs");
     Shader skyboxShader("resources/shaders/skybox.vs", "resources/shaders/skybox.fs");
+    Shader hdrShader("resources/shaders/hdr.vs", "resources/shaders/hdr.fs");
 
     // load models
     // -----------
@@ -408,11 +409,11 @@ int main() {
     unsigned int cubeDiffuse = loadTexture(FileSystem::getPath("resources/textures/bricks.png").c_str());
     unsigned int cubeSpecular = loadTexture(FileSystem::getPath("resources/textures/bricksSpecular.png").c_str());
     unsigned int cubeNormal = loadTexture(FileSystem::getPath("resources/textures/bricksNormal.png").c_str());
-    unsigned int cubeDisp = loadTexture(FileSystem::getPath("resources/textures/bricksDisplacment.png").c_str());
+    unsigned int cubeDisp = loadTexture(FileSystem::getPath("resources/textures/bricksDisplacement.png").c_str());
     unsigned int mysteryDiffuse = loadTexture(FileSystem::getPath("resources/textures/mystery.png").c_str());
     unsigned int mysterySpecular = loadTexture(FileSystem::getPath("resources/textures/mystery_specular.png").c_str());
     unsigned int mysteryNormal = loadTexture(FileSystem::getPath("resources/textures/mystery_normal.png").c_str());
-    unsigned int mysteryDisp= loadTexture(FileSystem::getPath("resources/textures/mystery_displacment.png").c_str());
+    unsigned int mysteryDisp= loadTexture(FileSystem::getPath("resources/textures/mystery_displacement.png").c_str());
 
     vector<std::string> faces
             {
@@ -437,7 +438,29 @@ int main() {
     pointLight.linear = 0.09f;
     pointLight.quadratic = 0.032f;
 
-
+    // configure floating point framebuffer
+    // ------------------------------------
+    unsigned int hdrFBO;
+    glGenFramebuffers(1, &hdrFBO);
+    // create floating point color buffer
+    unsigned int colorBuffer;
+    glGenTextures(1, &colorBuffer);
+    glBindTexture(GL_TEXTURE_2D, colorBuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // create depth buffer (renderbuffer)
+    unsigned int rboDepth;
+    glGenRenderbuffers(1, &rboDepth);
+    glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, SCR_WIDTH, SCR_HEIGHT);
+    // attach buffers
+    glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "Framebuffer not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -476,7 +499,7 @@ int main() {
         materialShader.setBool("blinn",true);
         materialShader.setFloat("heightScale",heightScale);
 
-        wmaterialShader.setVec3("spotLight.position", glm::vec3(5.0f));
+        materialShader.setVec3("spotLight.position", glm::vec3(5.0f));
         materialShader.setVec3("spotLight.direction", glm::vec3(-5.0f));
         materialShader.setVec3("spotLight.ambient", glm::vec3(0.4f,0.4f,0.4f));
         materialShader.setVec3("spotLight.diffuse", glm::vec3(1.0f,1.0f,1.0f));
