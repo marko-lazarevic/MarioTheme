@@ -937,9 +937,11 @@ void renderQuad()
     glBindVertexArray(0);
 }
 
+unsigned int hdrQuadVAO = 0;
+unsigned int hdrQuadVBO;
 void renderHDRQuad()
 {
-    if (quadVAO == 0)
+    if (hdrQuadVAO == 0)
     {
         float quadVertices[] = {
                 // positions        // texture Coords
@@ -949,17 +951,17 @@ void renderHDRQuad()
                 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
         };
         // setup plane VAO
-        glGenVertexArrays(1, &quadVAO);
-        glGenBuffers(1, &quadVBO);
-        glBindVertexArray(quadVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+        glGenVertexArrays(1, &hdrQuadVAO);
+        glGenBuffers(1, &hdrQuadVBO);
+        glBindVertexArray(hdrQuadVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, hdrQuadVBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     }
-    glBindVertexArray(quadVAO);
+    glBindVertexArray(hdrQuadVAO);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
 }
