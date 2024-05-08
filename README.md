@@ -4,6 +4,9 @@
 ![image](https://github.com/marko-lazarevic/MarioTheme/assets/57814676/b23c2c4c-c24e-4eaf-add8-372b84baaacf)
 
 ![image](https://github.com/marko-lazarevic/MarioTheme/assets/57814676/e3c093d7-090a-4d39-93c1-95f8509e876a)
+
+![image](https://github.com/marko-lazarevic/MarioTheme/assets/57814676/fa9a7132-aa2f-478b-825a-22d603f24e03)
+
 <br>
 # Keyboard instructions:
 
