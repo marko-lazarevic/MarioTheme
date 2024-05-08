@@ -521,6 +521,7 @@ int main() {
     hdrShader.use();
     hdrShader.setInt("scene", 0);
     hdrShader.setInt("bloomBlur", 1);
+
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -562,6 +563,7 @@ int main() {
         materialShader.setFloat("material.shininess", 32.0f);
         materialShader.setBool("blinn",true);
         materialShader.setFloat("heightScale",heightScale);
+        materialShader.setVec3("pointLightColor", glm::vec3(15, 14, 0));
 
         materialShader.setInt("pointLightsSize",pointLights.size());
        for (unsigned int i = 0; i < pointLights.size(); i++)
@@ -648,24 +650,27 @@ int main() {
 
         int i=0;
         for(auto coin:coins){
-            materialShader.use();
+
+            materialShader.setVec3("pointLights[" + std::to_string(i) + "].position", glm::vec3(coin[0],coin[1],coin[2]));
+            i++;
             model = glm::mat4(1.0f);
             model = glm::translate(model,glm::vec3(coin[0],coin[1],coin[2]));
-            materialShader.setVec3("pointLights[" + std::to_string(i) + "].position", glm::vec3(coin[0],coin[1],coin[2]));
             model = glm::translate(model, glm::vec3(0, (float)glm::cos(glfwGetTime()) / 3.0f, 0.0f));
             model = glm::scale(model, glm::vec3(0.1f));
             model = glm::rotate(model, 5.0f * (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-            materialShader.setMat4("model", model);
-            coinModel.Draw(materialShader);
-            i++;
 
-            shaderLight.use();
-            shaderLight.setMat4("projection", projection);
-            shaderLight.setMat4("view", view);
-            model = glm::scale(model, glm::vec3(0.25f));
-            shaderLight.setMat4("model", model);
-            shaderLight.setVec3("lightColor", glm::vec3(0.0,1.0,1.0));
-            renderEmptyCube();
+            if(bloom) {
+                shaderLight.use();
+                shaderLight.setMat4("projection", projection);
+                shaderLight.setMat4("view", view);
+                shaderLight.setMat4("model", model);
+                shaderLight.setVec3("lightColor", glm::vec3(31, 28, 0));
+                coinModel.Draw(shaderLight);
+            }else{
+                materialShader.use();
+                materialShader.setMat4("model", model);
+                coinModel.Draw(materialShader);
+            }
         }
 
 

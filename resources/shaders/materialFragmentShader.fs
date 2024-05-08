@@ -134,20 +134,20 @@ void main()
     vec4 result = vec4(0.0f);
     vec4 lighting = vec4(0.0f);
 
-    //lighting += CalcDirLight(dirLight, norm, viewDir, texCoords);
+    lighting += CalcDirLight(dirLight, norm, viewDir, texCoords);
     lighting += CalcPointLight(pointLight, norm,fs_in.FragPos, viewDir, texCoords);
     lighting += CalcSpotLight(spotLight, norm, fs_in.FragPos, viewDir, texCoords);
 
     for(int i=0; i< pointLightsSize; i++){
-        result = CalcPointLight(pointLights[i], norm,fs_in.FragPos, viewDir, texCoords);
+        result =  CalcPointLight(pointLights[i], norm,fs_in.FragPos, viewDir, texCoords);
         float distance = length(fs_in.FragPos - pointLights[i].position);
         result *= 1.0/ (distance*distance);
-        lighting+= result;
+        lighting+= vec4(pointLightColor,1.0) *result;
     }
 
     result = lighting;
 
-    float brightness = dot(result.xyz, vec3(0.2126, 0.7152, 0.0722));
+    float brightness = dot(result.xyz, vec3(0.9126, 0.9152, 0.9722));
         if(brightness > 1.0)
             BrightColor = result;
         else
@@ -210,7 +210,7 @@ vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
-    return (ambient + 50*diffuse + specular);
+    return (ambient + diffuse + specular);
 }
 
 //SPOT LIGHT
